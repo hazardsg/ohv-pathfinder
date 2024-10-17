@@ -1,0 +1,77 @@
+cloudeos:
+  username: admin
+  password: admin
+  version: 4.32.1F
+tools-server:
+  username: ansible 
+  password: admin
+  version: ubuntu-2204-lts
+nodes:
+  - cloudeos1:
+      ip_addr: 192.168.0.11
+      node_type: cloudeos
+      instance_type: xlarge
+      internet_access: true
+  - cloudeos2:
+      ip_addr: 192.168.0.12
+      node_type: cloudeos
+      instance_type: xlarge
+      internet_access: true
+  - cloudeos3:
+      ip_addr: 192.168.0.13
+      node_type: cloudeos
+      internet_access: true
+  - cloudeos4:
+      ip_addr: 192.168.0.14
+      node_type: cloudeos
+      internet_access: true
+  - cloudeos5:
+      ip_addr: 192.168.0.15
+      node_type: cloudeos
+      instance_type: xlarge
+      internet_access: true
+  - cloudeos6:
+      ip_addr: 192.168.0.16
+      node_type: cloudeos
+      instance_type: xlarge
+      internet_access: true
+  - cloudeos7:
+      ip_addr: 192.168.0.17
+      node_type: cloudeos
+      instance_type: xlarge
+      internet_access: true
+  - tools:
+      ip_addr: 192.168.0.6
+      node_type: tools-server
+
+links:
+
+  - connection:
+    - cloudeos1:Ethernet1
+    - cloudeos3:Ethernet1
+  - connection:
+    - cloudeos1:Ethernet2
+    - cloudeos4:Ethernet1
+
+  - connection:
+    - cloudeos2:Ethernet1
+    - cloudeos3:Ethernet2
+  - connection:
+    - cloudeos2:Ethernet2
+    - cloudeos4:Ethernet2
+
+  - connection:
+    - cloudeos5:Ethernet1
+    - cloudeos3:Ethernet3
+
+  - connection:
+    - cloudeos6:Ethernet1
+    - cloudeos3:Ethernet4
+
+  - connection:
+    - cloudeos6:Ethernet2
+    - cloudeos4:Ethernet3
+
+  - connection:
+    - cloudeos7:Ethernet1
+    - cloudeos4:Ethernet4

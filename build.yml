@@ -1,0 +1,14 @@
+---
+- name: Build config
+  hosts: wan
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: Generate intended variables
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate intended config and documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen

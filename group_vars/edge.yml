@@ -1,0 +1,43 @@
+---
+type: wan_router
+
+wan_router:
+  defaults:
+    id: 1
+    loopback_ipv4_offset: -1
+    cv_pathfinder_region: US_Central
+    filter:
+      always_include_vrfs_in_tenants: [wan]
+  nodes:
+    - name: cloudeos5
+      cv_pathfinder_site: Detroit_MI_SITE5
+      loopback_ipv4_pool: 10.254.254.5/32
+      vtep_loopback_ipv4_pool: 5.5.5.5/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.35.5/24
+          wan_carrier: mpls
+          wan_circuit_id: cir_pony_express_02
+
+    - name: cloudeos6
+      cv_pathfinder_site: Cleveland_OH_SITE6
+      loopback_ipv4_pool: 10.254.254.6/32
+      vtep_loopback_ipv4_pool: 6.6.6.6/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.36.6/24
+          wan_carrier: mpls
+          wan_circuit_id: cir_pony_express_01
+        - name: Ethernet2
+          ip_address: 172.16.46.6/24
+          wan_carrier: internet
+          wan_circuit_id: cir_carrier_pidgeon_01
+    - name: cloudeos7
+      cv_pathfinder_site: Lexington_KY_SITE7
+      loopback_ipv4_pool: 10.254.254.7/32
+      vtep_loopback_ipv4_pool: 7.7.7.7/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.47.7/24
+          wan_carrier: internet
+          wan_circuit_id: cir_carrier_pidgeon_02

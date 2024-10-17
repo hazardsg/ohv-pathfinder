@@ -1,0 +1,25 @@
+---
+type: wan_router
+
+wan_router:
+  defaults:
+    id: 1
+    loopback_ipv4_offset: -1
+    cv_pathfinder_region: US_Central
+    cv_pathfinder_transit_mode: region
+    filter:
+      always_include_vrfs_in_tenants: [wan]
+  nodes:
+    - name: cloudeos2
+      cv_pathfinder_site: Indianapolis_IN_TRANSIT
+      loopback_ipv4_pool: 10.254.254.2/32
+      vtep_loopback_ipv4_pool: 2.2.2.2/32
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.23.2/24
+          wan_carrier: mpls
+          wan_circuit_id: cir_dial_up_02
+        - name: Ethernet2
+          ip_address: 172.16.24.2/24
+          wan_carrier: internet
+          wan_circuit_id: cir_morse_code_02

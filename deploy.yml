@@ -1,0 +1,19 @@
+- name: Deploy config
+  hosts: wan
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Deploy to CVaaS
+      run_once: true
+      delegate_to: localhost
+      arista.avd.cv_workflow:
+        cv_servers: ["www.cv-staging.corp.arista.io"]
+        cv_token: "{{ cv_token }}"
+        configuration_dir: "{{ inventory_dir }}/intended/configs"
+        structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
+        device_list: "{{ ansible_play_hosts }}"
+        workspace:
+          requested_state: submitted
+        change_control:
+          requested_state: pending approval
+        return_details: false

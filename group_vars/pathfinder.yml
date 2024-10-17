@@ -1,0 +1,23 @@
+---
+type: wan_rr
+
+wan_rr:
+  defaults:
+    data_plane_cpu_allocation_max: 1
+    loopback_ipv4_pool: 10.254.254.1/30
+    vtep_loopback_ipv4_pool: 1.1.1.1/31
+    cv_pathfinder_region: US_Central
+    filter:
+      always_include_vrfs_in_tenants: [wan]
+  nodes:
+    - name: cloudeos1
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.13.1/24
+          wan_carrier: mpls
+          wan_circuit_id: cir_dial_up_01
+        - name: Ethernet2
+          ip_address: 172.16.14.1/24
+          wan_carrier: internet
+          wan_circuit_id: cir_morse_code_01

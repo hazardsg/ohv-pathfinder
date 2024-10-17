@@ -1,0 +1,151 @@
+---
+fabric_name: wan
+
+mgmt_interface_vrf: default
+
+ansible_user: 'admin'
+ansible_password: 'admin'
+ansible_network_os: eos
+ansible_become: yes
+ansible_become_method: enable
+
+validation_mode_loose: true
+
+
+bgp_update_wait_install: false
+
+wan_mode: cv-pathfinder
+
+bgp_as: 65001
+
+cv_pathfinder_regions:
+  - name: US_Central
+    id: 1
+    sites:
+      - name: Indianapolis_IN_TRANSIT
+        id: 101
+        location: Indianapolis, IN
+      - name: Detroit_MI_SITE5
+        id: 105
+        location: Detroit, MI
+      - name: Cleveland_OH_SITE6
+        id: 106
+        location: Cleveland, OH
+      - name: Lexington_KY_SITE7
+        id: 107
+        location: Lexington, KY
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 2.2.2.2/32
+      - 5.5.5.5/32
+      - 6.6.6.6/32
+      - 7.7.7.7/32
+
+wan_route_servers:
+  - hostname: cloudeos1
+
+wan_stun_dtls_disable: True
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: 0110100A480E0A0E231D1E
+  data_plane:
+    shared_key: 0110100A480E0A0E231D1E
+
+wan_path_groups:
+  - name: mpls
+    id: 1001
+  - name: internet
+    id: 1002
+
+wan_carriers:
+  - name: mpls
+    path_group: mpls
+    trusted: true
+  - name: internet
+    path_group: internet
+    trusted: true
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+      wan_vni: 101
+    - name: PROD
+      policy: PROD-AVT-POLICY
+      wan_vni: 102
+    - name: GUEST
+      policy: GUEST-AVT-POLICY
+      wan_vni: 103
+  policies:
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [mpls, internet]
+            preference: preferred
+    - name: PROD-AVT-POLICY
+      application_virtual_topologies:
+        - application_profile: VOICE
+          id: 4
+          traffic_class: 5
+          dscp: 46
+          path_groups:
+            - names: [internet]
+              preference: alternate
+            - names: [mpls]
+              preference: preferred
+          lowest_hop_count: false
+          constraints:
+            latency: 150
+            jitter: 30
+            loss_rate: "0.00"
+      default_virtual_topology:
+        path_groups:
+          - names: [mpls, internet]
+            preference: preferred
+    - name: GUEST-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+            - names: [internet]
+              preference: preferred
+            - names: [mpls]
+              preference: alternate
+
+
+application_classification:
+  field_sets:
+    ipv4_prefixes:
+      - name: VOICEHostsDstPrefixes
+        prefix_values:
+          - 172.30.0.0/16
+      - name: VOICEHostsSrcPrefixes
+        prefix_values:
+          - 172.30.0.0/16
+
+  applications:
+    ipv4_applications:
+      - name: VOICE
+        dest_prefix_set_name: VOICEHostsDstPrefixes
+        src_prefix_set_name: VOICEHostsSrcPrefixes
+
+  application_profiles:
+    - name: VOICE
+      applications:
+        - name: VOICE
+
+
+overlay_rt_type:
+  admin_subfield: bgp_as
+
+tenants:
+  - name: wan
+    vrfs:
+      - name: default
+        vrf_vni: 101
+      - name: PROD
+        vrf_vni: 102
+      - name: GUEST
+        vrf_vni: 103

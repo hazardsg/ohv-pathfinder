@@ -1,0 +1,31 @@
+---
+all:
+  children:
+    wan:
+      children:
+        pathfinder:
+          hosts:
+             cloudeos1:
+              ansible_host: 10.18.145.208
+              ansible_user: admin
+              ansible_ssh_pass: "admin"
+        transit:
+          hosts:
+             cloudeos2:
+              ansible_host: 10.18.145.209
+              ansible_user: admin
+              ansible_ssh_pass: "admin"
+        edge:
+          hosts:
+            cloudeos5:
+              ansible_host: 10.18.136.124
+              ansible_user: admin
+              ansible_ssh_pass: "admin"
+            cloudeos6:
+              ansible_host: 10.18.136.120
+              ansible_user: admin
+              ansible_ssh_pass: "admin"
+            cloudeos7:
+              ansible_host: 10.18.145.206
+              ansible_user: admin
+              ansible_ssh_pass: "admin"              

@@ -1,0 +1,6 @@
+---
+
+host_custom_structured_loopback_interfaces:
+  - name: Loopback10
+    vrf: PROD
+    ip_address: 172.30.6.6/32
